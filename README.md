@@ -1,25 +1,18 @@
-# **BookBot**
+# **BookBot v2.0**
 
-BookBot is my first [Boot.dev](https://www.boot.dev) project!
-
-BookBot is a simple command-line tool that analyzes a text file (such as a book) and reports:
-
-- Total number of words  
-- Frequency of each alphabetical character (sorted from most common to least)
-
-The project consists of two main files:
-
-- `main.py` — handles command-line input, reads the file, and displays results  
-- `stats.py` — contains helper functions for counting words and characters  
+BookBot is a command-line tool that analyzes a text file (such as a book) and generates a detailed statistical report. Originally built as a [Boot.dev](https://www.boot.dev) project, now enhanced with additional analysis features.
 
 ---
 
 ## **Features**
 
-- Counts total words in a text file  
-- Counts occurrences of every character (case-insensitive)  
-- Sorts characters by frequency in descending order  
-- Displays only alphabetical characters in the result  
+- Total word and sentence count
+- Average word length calculation
+- Estimated reading time (based on 200 wpm)
+- Top 10 most frequent words with visual bar chart
+- Longest and shortest words in the text
+- Character frequency analysis (case-insensitive, alphabetic only)
+- Clean, formatted terminal output with section headers
 
 ---
 
@@ -27,17 +20,14 @@ The project consists of two main files:
 
 ```
 bookbot/
-│
-├── main.py        # The main program that prints results
-├── stats.py       # Helper functions (word count, char count, sorting)
-└── README.md      # Project documentation
+├── main.py        # CLI entry point and report display
+├── stats.py       # Text analysis functions
+└── README.md      # Documentation
 ```
 
 ---
 
 ## **Usage**
-
-Run the program from the terminal:
 
 ```bash
 python3 main.py <path_to_text_file>
@@ -49,7 +39,7 @@ python3 main.py <path_to_text_file>
 python3 main.py books/frankenstein.txt
 ```
 
-If you do not provide exactly one argument, the program prints:
+If no argument is provided:
 
 ```
 Usage: python3 main.py <path_to_book>
@@ -57,49 +47,70 @@ Usage: python3 main.py <path_to_book>
 
 ---
 
-## **How It Works**
-
-### **main.py**
-- Reads the file path from command-line arguments  
-- Loads the text  
-- Calls functions from `stats.py`  
-- Prints word count  
-- Prints character frequencies (only letters)  
-
-### **stats.py**
-
-Contains three main functions:
-
-#### `get_num_words(text)`
-Splits the text into words and returns how many exist.
-
-#### `count_characters(text)`
-Counts each character (converted to lowercase).
-
-#### `sort_characters(count)`
-Builds a list of `{ "char": x, "num": y }` and sorts it by frequency.
-
----
-
 ## **Example Output**
 
 ```
-============ BOOKBOT ============
-Analyzing book found at books/sample.txt...
------------ Word Count ----------
-Found 54231 total words
---------- Character Count -------
-e: 42412
-t: 30551
-a: 27735
-o: 27118
-...
-============= END ===============
+╔════════════════════════════════════════╗
+║            📖 BOOKBOT v2.0            ║
+╠════════════════════════════════════════╣
+║  Analyzing: books/frankenstein.txt    ║
+╚════════════════════════════════════════╝
+
+────────────────────────────────────────
+  📊 Summary
+────────────────────────────────────────
+  Words:              77,986
+  Sentences:          3,204
+  Avg word length:    4.56 characters
+  Est. reading time:  6 hr 29 min
+
+────────────────────────────────────────
+  🔤 Top 10 Most Frequent Words
+────────────────────────────────────────
+   1. the            4,842  ████████████████████
+   2. and            3,028  ████████████
+   3. i              2,798  ███████████
+   ...
+
+────────────────────────────────────────
+  📏 Longest Words
+────────────────────────────────────────
+  • accomplishments (15 chars)
+  • representations (15 chars)
+  ...
+
+════════════════════════════════════════
+  Analysis complete. Happy reading!
+════════════════════════════════════════
 ```
+
+---
+
+## **How It Works**
+
+### **main.py**
+- Reads the file path from command-line arguments
+- Calls analysis functions from `stats.py`
+- Displays a formatted report with all statistics
+
+### **stats.py**
+
+| Function | Description |
+|----------|-------------|
+| `get_num_words(text)` | Counts total words |
+| `get_num_sentences(text)` | Counts sentences (splits on `.!?`) |
+| `get_avg_word_length(text)` | Average character count per word |
+| `get_longest_words(text, n)` | Returns the N longest unique words |
+| `get_shortest_words(text, n)` | Returns the N shortest unique words (min 2 chars) |
+| `get_reading_time(text)` | Estimates reading time at 200 wpm |
+| `get_top_words(text, n)` | Top N most frequent words |
+| `count_characters(text)` | Character frequency (case-insensitive) |
+| `sort_characters(count)` | Sorts characters by frequency descending |
 
 ---
 
 ## **Requirements**
 
-- Python 3.x  
-- A plain text file to analyze  
+- Python 3.6+
+- A plain text file to analyze
+- No external dependencies required
